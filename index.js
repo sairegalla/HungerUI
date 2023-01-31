@@ -1,10 +1,18 @@
-import React from "react";
+import React, { Fragment } from "react";
 import ReactDOM, { createRoot }  from "react-dom/client";
+
+import Header from "./components/Header";
+import Footer from "./components/Footer";
+import Body from "./components/Body";
 
 
 
 let App = () => {
-    return(<div>this is food ordering app</div> )
+    return (<React.Fragment> 
+    <Header />
+    <Body />
+    <Footer />
+    </ React.Fragment>) 
 }
 
 
