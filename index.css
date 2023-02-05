@@ -41,3 +41,8 @@
   background-color: #efefef;
   margin: 20px;
 }
+
+.resturantMenu {
+  display: flex;
+  flex-wrap: wrap;
+}

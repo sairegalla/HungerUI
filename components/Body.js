@@ -1,28 +1,17 @@
 import RestaurantCard from "./ResturantCard";
-// import { config } from "../constants";
-import React, { useEffect, useState } from "react";
-
+import React, { useState } from "react";
 import Shimmer from "./Shimmer";
+import { Link } from "react-router-dom";
+import { filteredList } from "../utils/Helper";
+import useResturantsList from "../utils/useResturantsList";
+import "../index.css";
 
 const Body = () => {
   const [searchTerm, setSearchTerm] = useState("");
-  const [resturantList, setResturantList] = useState([]);
-  const [filtredResturantList, setFiltredResturantList] = useState([]);
+  const [restaurantList, filtredRestaurantList, setFiltredRestaurantList] =
+    useResturantsList();
 
-  useEffect(() => {
-    RestaurantList();
-  }, []);
-
-  const RestaurantList = async () => {
-    const data = await fetch(
-      "https://www.swiggy.com/dapi/restaurants/list/v5?lat=16.4402499&lng=80.5361341&page_type=DESKTOP_WEB_LISTING"
-    );
-
-    const json = await data.json();
-    console.log(json);
-    setResturantList(json?.data?.cards[2]?.data?.data?.cards);
-    setFiltredResturantList(json?.data?.cards[2]?.data?.data?.cards);
-  };
+  console.log(restaurantList);
 
   return (
     <>
@@ -37,22 +26,26 @@ const Body = () => {
       />
       <button
         onClick={() => {
-          setFiltredResturantList(
-            resturantList.filter((config) => {
-              return config.data.name.toLowerCase().includes(searchTerm);
-            })
-          );
+          console.log(restaurantList);
+          setFiltredRestaurantList(filteredList(searchTerm, restaurantList));
         }}
       >
         search
       </button>
       <div className="restaurantList">
-        {filtredResturantList.length === 0 ? (
+        {filtredRestaurantList?.length === 0 ? (
           <Shimmer />
         ) : (
-          filtredResturantList.map((config) => {
+          filtredRestaurantList?.map((config) => {
             console.log(config.data.name);
-            return <RestaurantCard {...config.data} key={config.data.id} />;
+            return (
+              <Link
+                to={"/resturant/" + config?.data?.id}
+                key={config?.data?.id}
+              >
+                <RestaurantCard {...config?.data} />
+              </Link>
+            );
           })
         )}
       </div>
